@@ -16,7 +16,7 @@ class TrainingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Training Section")),
+      appBar: AppBar(title: const Text("Training Section"),centerTitle: true,),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

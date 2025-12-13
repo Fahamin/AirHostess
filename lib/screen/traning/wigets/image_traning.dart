@@ -7,7 +7,7 @@ class ImageTrainingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Image Training")),
+      appBar: AppBar(title: const Text("Image Training"),centerTitle: true,),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: 8,

@@ -8,7 +8,7 @@ class AudioTrainingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Audio Training")),
+      appBar: AppBar(title: const Text("Audio Training"),centerTitle: true,),
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (_, i) => ListTile(

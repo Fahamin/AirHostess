@@ -23,7 +23,7 @@ class MarketPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Marketplace")),
+      appBar: AppBar(title: const Text("Marketplace"),centerTitle: true,),
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: products.length,

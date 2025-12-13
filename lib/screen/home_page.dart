@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
      Get.put(CartController());
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Home")),
+      appBar: AppBar(title: const Text("Home"),centerTitle: true,),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

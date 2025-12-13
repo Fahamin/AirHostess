@@ -8,7 +8,7 @@ class VideoTrainingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Video Training")),
+      appBar: AppBar(title: const Text("Video Training"),centerTitle: true,),
       body: ListView.builder(
         itemCount: 6,
         itemBuilder: (_, i) => Card(

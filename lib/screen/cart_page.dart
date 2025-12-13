@@ -16,7 +16,7 @@ class CartPage extends StatelessWidget {
     final controller = Get.find<CartController>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Your Cart")),
+      appBar: AppBar(title: const Text("Your Cart"),centerTitle: true,),
       body: Obx(
             () => controller.cart.isEmpty
             ? const Center(child: Text("Cart is empty"))

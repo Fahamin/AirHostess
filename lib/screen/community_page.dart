@@ -6,7 +6,7 @@ class CommunityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Community")),
+      appBar: AppBar(title: const Text("Community"),centerTitle: true,),
       body: ListView.builder(
         itemCount: 6,
         itemBuilder: (_, i) => ListTile(

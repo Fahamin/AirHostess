@@ -7,7 +7,7 @@ class TextTrainingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Text Training")),
+      appBar: AppBar(title: const Text("Text Training"),centerTitle: true,),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: const Text(
