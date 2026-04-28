@@ -48,7 +48,9 @@ class CartPage extends StatelessWidget {
                             ),
                             Obx(() => Text(item.qty.value.toString())),
                             IconButton(
+
                               icon: const Icon(Icons.add_alarm_outlined),
+
                               onPressed: () {
                                 item.qty.value++;
                               },
