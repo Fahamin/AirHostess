@@ -39,7 +39,7 @@ class CartPage extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.remove),
+                              icon: const Icon(Icons.delete),
                               onPressed: () {
                                 if (item.qty.value > 1) {
                                   item.qty.value--;
@@ -48,7 +48,7 @@ class CartPage extends StatelessWidget {
                             ),
                             Obx(() => Text(item.qty.value.toString())),
                             IconButton(
-                              icon: const Icon(Icons.add),
+                              icon: const Icon(Icons.add_alarm_outlined),
                               onPressed: () {
                                 item.qty.value++;
                               },
