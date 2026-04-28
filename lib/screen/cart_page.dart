@@ -135,50 +135,71 @@ class CartPage extends StatelessWidget {
   // নিচে পেমেন্ট সেকশন
   Widget _buildCheckoutSection(CartController controller) {
     return Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("Total Amount",
-                      style: TextStyle(fontSize: 16, color: Colors.grey)),
-                  Obx(() => Text(
-                    "\$${controller.total.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent),
-                  )),
-                ],
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // controller.clear(); // পেমেন্টের আগে ক্লিয়ার না করাই ভালো
-                    Get.to(() => const PaymentMethodPage());
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    elevation: 0,
-                  ),
-                  child: const Text(
-                    "Proceed to Checkout",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
+      padding: const EdgeInsets.all(24),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+      ),
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text("Total Amount",
+                    style: TextStyle(fontSize: 16, color: Colors.grey)),
+                Obx(() => Text(
+                  "\$${controller.total.toStringAsFixed(2)}",
+                  style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent),
+                )),
+              ],
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton(
+                onPressed: () {
+                  // controller.clear(); // পেমেন্টের আগে ক্লিয়ার না করাই ভালো
+                  Get.to(() => const PaymentMethodPage());
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  elevation: 0,
+                ),
+                child: const Text(
+                  "Proceed to Checkout",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
-            ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // কার্ট খালি থাকলে যা দেখাবে
+  Widget _buildEmptyCart() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.shopping_cart_outlined, size: 80, color: Colors.grey[300]),
+          const SizedBox(height: 15),
+          const Text(
+            "Your cart is empty!",
+            style: TextStyle(fontSize: 18, color: Colors.grey),
           ),
+        ],
+      ),
+    );
+  }
+}
