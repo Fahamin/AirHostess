@@ -1,12 +1,7 @@
-import 'package:airhostess/screen/payement_page.dart';
-import 'package:airhostess/screen/payment_method_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-
+import 'package:get/get.dart';
 import '../controller/cart_controller.dart';
+import 'package:airhostess/screen/payment_method_page.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -16,85 +11,174 @@ class CartPage extends StatelessWidget {
     final controller = Get.find<CartController>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Your Cart"),centerTitle: true,),
-      body: Obx(
-            () => controller.cart.isEmpty
-            ? const Center(child: Text("Cart is empty"))
-            : Flexible(
-              child: Column(
-                        children: [
-              Expanded(
-                flex: 12,
-                child: ListView.builder(
-                  itemCount: controller.cart.length,
-                  itemBuilder: (_, i) {
-                    final item = controller.cart[i];
-                    return Card(
-                      margin: const EdgeInsets.all(8),
-                      child: ListTile(
-                        title: Text(item.name),
-                        subtitle:
-                        Text("\$${item.price} x ${item.qty.value}"),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              onPressed: () {
-                                if (item.qty.value > 1) {
-                                  item.qty.value--;
-                                }
-                              },
-                            ),
-                            Obx(() => Text(item.qty.value.toString())),
-                            IconButton(
-                              icon:  Icon(Icons.add_alarm_sharp),
-                              onPressed: () {
-                                item.qty.value++;
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: const Text(
+          "My Cart",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      body: Obx(() {
+        if (controller.cart.isEmpty) {
+          return _buildEmptyCart();
+        }
+        return Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(12),
+                itemCount: controller.cart.length,
+                itemBuilder: (_, i) {
+                  final item = controller.cart[i];
+                  return _buildCartItem(item);
+                },
               ),
-              Expanded(
-                flex: 6,
-                child: Container(
-
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade50,
-                    borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
-                  ),
-                  child: Column(
-                    children: [
-                      Obx(() => Text(
-                        "Total: \$${controller.total.toStringAsFixed(2)}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )),
-                      ElevatedButton(
-                        onPressed: () {
-                          controller.clear();
-                          Get.off(() => const PaymentMethodPage());
-                        },
-                        style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 15)),
-                        child: const Text("Pay Now"),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-                        ],
-                      ),
             ),
+            _buildCheckoutSection(controller),
+          ],
+        );
+      }),
+    );
+  }
+
+  // কার্ট আইটেমের ডিজাইন
+  Widget _buildCartItem(item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          children: [
+            // আইটেম ইমেজ হোল্ডার (যদি থাকে)
+            Container(
+              height: 70,
+              width: 70,
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.fastfood, color: Colors.blue),
+            ),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "\$${item.price}",
+                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            // কোয়ান্টিটি কন্ট্রোলার
+            Row(
+              children: [
+                _qtyButton(Icons.remove, () {
+                  if (item.qty.value > 1) item.qty.value--;
+                }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Obx(() => Text(
+                    "${item.qty.value}",
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  )),
+                ),
+                _qtyButton(Icons.add, () {
+                  item.qty.value++;
+                }),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
-}
+
+  // ছোট বাটন ডিজাইন
+  Widget _qtyButton(IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, size: 18, color: Colors.blueAccent),
+      ),
+    );
+  }
+
+  // নিচে পেমেন্ট সেকশন
+  Widget _buildCheckoutSection(CartController controller) {
+    return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Total Amount",
+                      style: TextStyle(fontSize: 16, color: Colors.grey)),
+                  Obx(() => Text(
+                    "\$${controller.total.toStringAsFixed(2)}",
+                    style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent),
+                  )),
+                ],
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                height: 55,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // controller.clear(); // পেমেন্টের আগে ক্লিয়ার না করাই ভালো
+                    Get.to(() => const PaymentMethodPage());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    "Proceed to Checkout",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
